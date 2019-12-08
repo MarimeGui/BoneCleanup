@@ -15,7 +15,7 @@ class CleanupBones(bpy.types.Operator):
     def execute(self, context):
         armature_obj = context.active_object
         if armature_obj.type != "ARMATURE":
-            self.report('ERROR_INVALID_INPUT', 'Selected object need to be an Armature')
+            self.report({'ERROR_INVALID_INPUT'}, 'Selected object need to be an Armature')
             return {'FINISHED'}
         bpy.ops.object.mode_set(mode="EDIT")
         no_children_bones = []
