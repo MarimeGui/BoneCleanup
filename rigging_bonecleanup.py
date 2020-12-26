@@ -4,11 +4,13 @@ bl_info = {
     "category": "Rigging"
 }
 
+# Thanks https://stackoverflow.com/questions/63863764/unable-to-find-custom-blender-operator-in-f3-operator-search-blender-2-9
+
 import bpy
 
 class CleanupBones(bpy.types.Operator):
     """Cleans up an Armature by recalculating each bones tail position"""
-    bl_idname = "bpy.ops"
+    bl_idname = "object.cleanup_bones"
     bl_label = "Cleanup Bones"
     bl_options = {'REGISTER', 'UNDO'}
     
@@ -38,9 +40,13 @@ class CleanupBones(bpy.types.Operator):
             bone.tail = [a+b for a, b in zip(bone.head, disp)]
         bpy.ops.object.mode_set(mode="OBJECT")
         return {'FINISHED'}
+    
+    def menu_func(self, context):
+        self.layout.operator(CleanupBones.bl_idname)
 
 def register():
     bpy.utils.register_class(CleanupBones)
+    bpy.types.VIEW3D_MT_object.append(CleanupBones.menu_func)
 
 def unregister():
     bpy.utils.unregister_class(CleanupBones)
